@@ -8,6 +8,8 @@
 #include "zmqabstractnotifier.h"
 
 class CBlockIndex;
+class CGovernanceVote;
+class CGovernanceObject;
 
 class CZMQAbstractPublishNotifier : public CZMQAbstractNotifier
 {
