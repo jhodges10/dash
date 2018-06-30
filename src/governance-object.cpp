@@ -97,6 +97,7 @@ CGovernanceObject::CGovernanceObject(const CGovernanceObject& other):
     fileVotes(other.fileVotes)
 {}
 
+// Proccesses votes when first received.
 bool CGovernanceObject::ProcessVote(CNode* pfrom,
                                     const CGovernanceVote& vote,
                                     CGovernanceException& exception,
