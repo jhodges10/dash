@@ -8,6 +8,8 @@
 #include "zmqconfig.h"
 
 class CBlockIndex;
+class CGovernanceObject;
+class CGovernanceVote;
 class CZMQAbstractNotifier;
 
 typedef CZMQAbstractNotifier* (*CZMQNotifierFactory)();
