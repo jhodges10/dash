@@ -64,4 +64,14 @@ public:
     bool NotifyTransactionLock(const CTransaction &transaction) override;
 };
 
+class CZMQPublishHashGovernanceVoteNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyGovernanceVote(const CGovernanceVote &vote) override;
+};
+class CZMQPublishHashGovernanceObjectNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyGovernanceObject(const CGovernanceObject &object) override;
+};
 #endif // BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H

@@ -16,6 +16,9 @@ static const char *MSG_HASHTXLOCK = "hashtxlock";
 static const char *MSG_RAWBLOCK   = "rawblock";
 static const char *MSG_RAWTX      = "rawtx";
 static const char *MSG_RAWTXLOCK  = "rawtxlock";
+static const char *MSG_GVOTE      = "governancevote";
+static const char *MSG_GOBJECT    = "governanceobject";
+
 
 // Internal function to send multipart message
 static int zmq_send_multipart(void *sock, const void* data, size_t size, ...)
@@ -210,4 +213,24 @@ bool CZMQPublishRawTransactionLockNotifier::NotifyTransactionLock(const CTransac
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss << transaction;
     return SendMessage(MSG_RAWTXLOCK, &(*ss.begin()), ss.size());
+}
+//TODO actually make this be called
+bool CZMQPublishHashGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanceVote &vote)
+{
+    uint256 hash = vote.GetHash();
+    LogPrint("zmq", "zmq: Publish governancevote %s\n", hash.GetHex());
+    char data[32];
+    for (unsigned int i = 0; i < 32; i++)
+        data[31 - i] = hash.begin()[i];
+    return SendMessage(MSG_GVOTE, data, 32);
+}
+
+bool CZMQPublishHashGovernanceObjectNotifier::NotifyGovernanceObject(const CGovernanceObject &object)
+{
+    uint256 hash = object.GetHash();
+    LogPrint("zmq", "zmq: Publish governanceobject %s\n", hash.GetHex());
+    char data[32];
+    for (unsigned int i = 0; i < 32; i++)
+        data[31 - i] = hash.begin()[i];
+    return SendMessage(MSG_GOBJECT, data, 32);
 }
