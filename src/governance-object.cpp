@@ -13,6 +13,7 @@
 #include "masternodeman.h"
 #include "messagesigner.h"
 #include "util.h"
+#include "validationinterface.h"
 
 #include <univalue.h>
 
@@ -199,6 +200,9 @@ bool CGovernanceObject::ProcessVote(CNode* pfrom,
         exception = CGovernanceException(ostr.str(), GOVERNANCE_EXCEPTION_PERMANENT_ERROR);
         return false;
     }
+
+	//Send notifications to scripts / zmq
+    GetMainSignals().NotifyGovernanceVote(vote);
 
     voteInstanceRef = vote_instance_t(vote.GetOutcome(), nVoteTimeUpdate, vote.GetTimestamp());
     fileVotes.AddVote(vote);
