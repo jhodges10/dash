@@ -18,6 +18,8 @@ class CReserveScript;
 class CTransaction;
 class CValidationInterface;
 class CValidationState;
+class CGovernanceVote;
+class CGovernanceObject;
 class uint256;
 
 // These functions dispatch to one or all registered wallets
@@ -71,6 +73,10 @@ struct CMainSignals {
     boost::signals2::signal<void (const CTransaction &, const CBlockIndex *pindex, int posInBlock)> SyncTransaction;
     /** Notifies listeners of an updated transaction lock without new data. */
     boost::signals2::signal<void (const CTransaction &)> NotifyTransactionLock;
+    /** Notifies listeners of a new governance vote. */
+	boost::signals2::signal<void (const CTransaction &)> NotifyGovernanceVote;
+    /** Notifies listeners of a new governance object. */
+    boost::signals2::signal<void (const CTransaction &)> NotifyGovernanceObject;
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
     boost::signals2::signal<bool (const uint256 &)> UpdatedTransaction;
     /** Notifies listeners of a new active block chain. */
