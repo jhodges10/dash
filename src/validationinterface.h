@@ -74,9 +74,9 @@ struct CMainSignals {
     /** Notifies listeners of an updated transaction lock without new data. */
     boost::signals2::signal<void (const CTransaction &)> NotifyTransactionLock;
     /** Notifies listeners of a new governance vote. */
-	boost::signals2::signal<void (const CTransaction &)> NotifyGovernanceVote;
+	boost::signals2::signal<void (const CGovernanceVote &)> NotifyGovernanceVote;
     /** Notifies listeners of a new governance object. */
-    boost::signals2::signal<void (const CTransaction &)> NotifyGovernanceObject;
+    boost::signals2::signal<void (const CGovernanceObject &)> NotifyGovernanceObject;
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
     boost::signals2::signal<bool (const uint256 &)> UpdatedTransaction;
     /** Notifies listeners of a new active block chain. */
