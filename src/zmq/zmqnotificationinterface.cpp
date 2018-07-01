@@ -187,7 +187,7 @@ void CZMQNotificationInterface::NotifyGovernanceVote(const CGovernanceVote &vote
     for (std::list<CZMQAbstractNotifier*>::iterator i = notifiers.begin(); i != notifiers.end(); )
     {
         CZMQAbstractNotifier *notifier = *i;
-        if (notifier->NotifyTransactionLock(vote))
+        if (notifier->NotifyGovernanceVote(vote))
         {
             i++;
         }
@@ -204,7 +204,7 @@ void CZMQNotificationInterface::NotifyGovernanceObject(const CGovernanceObject &
     for (std::list<CZMQAbstractNotifier*>::iterator i = notifiers.begin(); i != notifiers.end(); )
     {
         CZMQAbstractNotifier *notifier = *i;
-        if (notifier->NotifyTransactionLock(tx))
+        if (notifier->NotifyGovernanceObject(object))
         {
             i++;
         }
