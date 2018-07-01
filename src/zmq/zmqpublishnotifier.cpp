@@ -214,7 +214,7 @@ bool CZMQPublishRawTransactionLockNotifier::NotifyTransactionLock(const CTransac
     ss << transaction;
     return SendMessage(MSG_RAWTXLOCK, &(*ss.begin()), ss.size());
 }
-//TODO actually make this be called
+
 bool CZMQPublishHashGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanceVote &vote)
 {
     uint256 hash = vote.GetHash();
