@@ -151,8 +151,9 @@ bool CZMQPublishHashBlockNotifier::NotifyBlock(const CBlockIndex *pindex)
     uint256 hash = pindex->GetBlockHash();
     LogPrint("zmq", "zmq: Publish hashblock %s\n", hash.GetHex());
     char data[32];
+    auto hashData = hash.begin();
     for (unsigned int i = 0; i < 32; i++)
-        data[31 - i] = hash.begin()[i];
+        data[31 - i] = hashData[i];
     return SendMessage(MSG_HASHBLOCK, data, 32);
 }
 
@@ -161,8 +162,9 @@ bool CZMQPublishHashTransactionNotifier::NotifyTransaction(const CTransaction &t
     uint256 hash = transaction.GetHash();
     LogPrint("zmq", "zmq: Publish hashtx %s\n", hash.GetHex());
     char data[32];
+    auto hashData = hash.begin();
     for (unsigned int i = 0; i < 32; i++)
-        data[31 - i] = hash.begin()[i];
+        data[31 - i] = hashData[i];
     return SendMessage(MSG_HASHTX, data, 32);
 }
 
@@ -171,8 +173,9 @@ bool CZMQPublishHashTransactionLockNotifier::NotifyTransactionLock(const CTransa
     uint256 hash = transaction.GetHash();
     LogPrint("zmq", "zmq: Publish hashtxlock %s\n", hash.GetHex());
     char data[32];
+    auto hashData = hash.begin();
     for (unsigned int i = 0; i < 32; i++)
-        data[31 - i] = hash.begin()[i];
+        data[31 - i] = hashData[i];
     return SendMessage(MSG_HASHTXLOCK, data, 32);
 }
 
@@ -220,8 +223,9 @@ bool CZMQPublishHashGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernan
     uint256 hash = vote.GetHash();
     LogPrint("zmq", "zmq: Publish governancevote %s\n", hash.GetHex());
     char data[32];
+    auto hashData = hash.begin();
     for (unsigned int i = 0; i < 32; i++)
-        data[31 - i] = hash.begin()[i];
+        data[31 - i] = dashData[i];
     return SendMessage(MSG_GVOTE, data, 32);
 }
 
@@ -230,7 +234,8 @@ bool CZMQPublishHashGovernanceObjectNotifier::NotifyGovernanceObject(const CGove
     uint256 hash = object.GetHash();
     LogPrint("zmq", "zmq: Publish governanceobject %s\n", hash.GetHex());
     char data[32];
+    auto hashData = hash.begin();
     for (unsigned int i = 0; i < 32; i++)
-        data[31 - i] = hash.begin()[i];
+        data[31 - i] = hashData[i];
     return SendMessage(MSG_GOBJECT, data, 32);
 }
