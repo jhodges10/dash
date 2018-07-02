@@ -17,6 +17,8 @@ zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashtxlock")
 zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawblock")
 zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawtx")
 zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawtxlock")
+zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashgovernancevote")
+zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashgovernanceobject")
 zmqSubSocket.connect("tcp://127.0.0.1:%i" % port)
 
 try:
@@ -48,6 +50,13 @@ try:
         elif topic == "rawtxlock":
             print('- RAW TX LOCK ('+sequence+') -')
             print(binascii.hexlify(body).decode("utf-8"))
+        elif topic == "hashgovernancevote":
+            print('- HASH GOVERNANCE VOTE ('+sequence+') -')
+            print(binascii.hexlify(body).decode("utf-8"))
+        elif topic == "hashgovernanceobject":
+            print('- HASH GOVERNANCE OBJECT ('+sequence+') -')
+            print(binascii.hexlify(body).decode("utf-8"))
+
 
 except KeyboardInterrupt:
     zmqContext.destroy()
