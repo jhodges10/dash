@@ -41,8 +41,8 @@ CZMQNotificationInterface* CZMQNotificationInterface::Create()
     factories["pubrawblock"] = CZMQAbstractNotifier::Create<CZMQPublishRawBlockNotifier>;
     factories["pubrawtx"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionNotifier>;
     factories["pubrawtxlock"] = CZMQAbstractNotifier::Create<CZMQPublishRawTransactionLockNotifier>;
-    factories["pubgvote"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceVoteNotifier>;
-    factories["pubgobject"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceObjectNotifier>;
+    factories["pubghashvote"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceVoteNotifier>;
+    factories["pubghashobject"] = CZMQAbstractNotifier::Create<CZMQPublishHashGovernanceObjectNotifier>;
 
     for (std::map<std::string, CZMQNotifierFactory>::const_iterator it=factories.begin(); it!=factories.end(); ++it)
     {
