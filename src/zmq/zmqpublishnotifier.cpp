@@ -18,8 +18,8 @@ static const char *MSG_HASHGOBJ   = "hashgovernanceobject";
 static const char *MSG_RAWBLOCK   = "rawblock";
 static const char *MSG_RAWTX      = "rawtx";
 static const char *MSG_RAWTXLOCK  = "rawtxlock";
-static const char *MSG_RAWGOVERNANCEOBJECT  = "rawgobject";
-static const char *MSG_RAWGOVERNANCEVOTE    = "rawgobjectvote";
+static const char *MSG_RAWGOVERNANCEOBJECT  = "rawgovernanceobject";
+static const char *MSG_RAWGOVERNANCEVOTE    = "rawgovernanceobjectvote";
 
 
 // Internal function to send multipart message
@@ -258,3 +258,4 @@ bool CZMQPublishRawGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanc
     CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
     ss << vote;
     return SendMessage(MSG_RAWGOVERNANCEVOTE, &(*ss.begin()), ss.size());
+}
