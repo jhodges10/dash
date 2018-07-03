@@ -256,6 +256,9 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, const std::string& strComm
             LogPrint("gobject", "MNGOVERNANCEOBJECTVOTE -- %s new\n", strHash);
             masternodeSync.BumpAssetLastTime("MNGOVERNANCEOBJECTVOTE");
             vote.Relay(connman);
+
+            // SEND NOTIFICATION TO ZMQ
+            GetMainSignals().NotifyGovernanceVote(vote)
         }
         else {
             LogPrint("gobject", "MNGOVERNANCEOBJECTVOTE -- Rejected vote, error = %s\n", exception.what());
@@ -362,7 +365,7 @@ void CGovernanceManager::AddGovernanceObject(CGovernanceObject& govobj, CConnman
     CGovernanceException exception;
     CheckOrphanVotes(govobj, exception, connman);
 
-    //Send notifications to scripts / zmq
+    // SEND NOTIFICATION TO ZMQ
     GetMainSignals().NotifyGovernanceObject(govobj);
 
 
