@@ -76,4 +76,16 @@ class CZMQPublishHashGovernanceObjectNotifier : public CZMQAbstractPublishNotifi
 public:
     bool NotifyGovernanceObject(const CGovernanceObject &object) override;
 };
+class CZMQPublishRawGovernanceObjectNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyGovernanceObject(const CGovernanceObject& govobj);
+};
+
+class CZMQPublishRawGovernanceVoteNotifier : public CZMQAbstractPublishNotifier
+{
+public:
+    bool NotifyGovernanceVote(const CGovernanceVote& vote);
+};
+
 #endif // BITCOIN_ZMQ_ZMQPUBLISHNOTIFIER_H

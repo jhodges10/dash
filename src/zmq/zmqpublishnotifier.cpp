@@ -13,11 +13,13 @@ static std::multimap<std::string, CZMQAbstractPublishNotifier*> mapPublishNotifi
 static const char *MSG_HASHBLOCK  = "hashblock";
 static const char *MSG_HASHTX     = "hashtx";
 static const char *MSG_HASHTXLOCK = "hashtxlock";
+static const char *MSG_HASHGVOTE  = "hashgovernancevote";
+static const char *MSG_HASHGOBJ   = "hashgovernanceobject";
 static const char *MSG_RAWBLOCK   = "rawblock";
 static const char *MSG_RAWTX      = "rawtx";
 static const char *MSG_RAWTXLOCK  = "rawtxlock";
-static const char *MSG_HASHGVOTE  = "hashgovernancevote";
-static const char *MSG_HASHGOBJ   = "hashgovernanceobject";
+static const char *MSG_RAWGOVERNANCEOBJECT  = "rawgobject";
+static const char *MSG_RAWGOVERNANCEVOTE    = "rawgobjectvote";
 
 
 // Internal function to send multipart message
@@ -239,3 +241,20 @@ bool CZMQPublishHashGovernanceObjectNotifier::NotifyGovernanceObject(const CGove
         data[31 - i] = hashData[i];
     return SendMessage(MSG_HASHGOBJ, data, 32);
 }
+
+bool CZMQPublishRawGovernanceObjectNotifier::NotifyGovernanceObject(const CGovernanceObject& govobj)
+{
+    uint256 nHash = govobj.GetHash();
+    LogPrint("gobject", "gobject: Publish rawgovernanceobject: hash = %s, type = %d\n", nHash.ToString(), govobj.GetObjectType());
+    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+    ss << govobj;
+    return SendMessage(MSG_RAWGOVERNANCEOBJECT, &(*ss.begin()), ss.size());
+}
+
+bool CZMQPublishRawGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanceVote& vote)
+{
+    uint256 nHash = vote.GetHash();
+    LogPrint("gobject", "gobject: Publish rawgovernancevote: hash = %s, vote = %s\n", nHash.ToString(), vote.ToString());
+    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+    ss << vote;
+    return SendMessage(MSG_RAWGOVERNANCEVOTE, &(*ss.begin()), ss.size());
