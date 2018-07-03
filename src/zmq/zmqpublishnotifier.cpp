@@ -19,7 +19,7 @@ static const char *MSG_RAWBLOCK   = "rawblock";
 static const char *MSG_RAWTX      = "rawtx";
 static const char *MSG_RAWTXLOCK  = "rawtxlock";
 static const char *MSG_RAWGOVERNANCEOBJECT  = "rawgovernanceobject";
-static const char *MSG_RAWGOVERNANCEVOTE    = "rawgovernanceobjectvote";
+static const char *MSG_RAWGOVERNANCEVOTE    = "rawgovernancevote";
 
 
 // Internal function to send multipart message
