@@ -366,7 +366,7 @@ void CGovernanceManager::AddGovernanceObject(CGovernanceObject& govobj, CConnman
     CheckOrphanVotes(govobj, exception, connman);
 
     // SEND NOTIFICATION TO ZMQ
-    GetMainSignals().NotifyGovernanceObject(govobj.ToString());
+    GetMainSignals().NotifyGovernanceObject(govobj);
 
 
     DBG( std::cout << "CGovernanceManager::AddGovernanceObject END" << std::endl; );
