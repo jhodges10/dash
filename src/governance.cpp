@@ -258,7 +258,7 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, const std::string& strComm
             vote.Relay(connman);
 
             // SEND NOTIFICATION TO ZMQ
-            GetMainSignals().NotifyGovernanceVote(vote);
+            GetMainSignals().NotifyGovernanceVote(vote.ToJson());
         }
         else {
             LogPrint("gobject", "MNGOVERNANCEOBJECTVOTE -- Rejected vote, error = %s\n", exception.what());
@@ -366,7 +366,7 @@ void CGovernanceManager::AddGovernanceObject(CGovernanceObject& govobj, CConnman
     CheckOrphanVotes(govobj, exception, connman);
 
     // SEND NOTIFICATION TO ZMQ
-    GetMainSignals().NotifyGovernanceObject(govobj);
+    GetMainSignals().NotifyGovernanceObject(govobj.ToJson());
 
 
     DBG( std::cout << "CGovernanceManager::AddGovernanceObject END" << std::endl; );
