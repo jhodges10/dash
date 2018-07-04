@@ -258,7 +258,7 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, const std::string& strComm
             vote.Relay(connman);
 
             // SEND NOTIFICATION TO ZMQ
-            GetMainSignals().NotifyGovernanceVote(vote.ToString());
+            GetMainSignals().NotifyGovernanceVote(vote);
         }
         else {
             LogPrint("gobject", "MNGOVERNANCEOBJECTVOTE -- Rejected vote, error = %s\n", exception.what());
