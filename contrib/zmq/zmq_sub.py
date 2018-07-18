@@ -29,7 +29,7 @@ def thread_manager():
 
     print("Starting ZMQ Consumer...")
     worker_1 = Process(target=zmq_tx_consumer, args=(short_queue, long_queue, lock_ten, lock_sixty))
-        worker_1.start()
+    worker_1.start()
 
     print("Starting Queue Consumer/ InitialState Submitter")
     worker_2 = Process(target=ten_seconds, args=(short_queue, lock_ten))
