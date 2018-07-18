@@ -41,7 +41,7 @@ def submit_is(msg_queue):
     while True:
         print("Printing queue output")
 
-        count = msg_queue.count()
+        count = len(list(msg_queue))
         print("Queue Size: {}".format(count))
 
         initialstate.send_log({"last_10_secs": count})
