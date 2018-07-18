@@ -44,8 +44,8 @@ def submit_is(msg_queue):
         count = len(list(msg_queue))
         print("Queue Size: {}".format(count))
 
-        initialstate.send_log({"last_10_secs": count})
-        print("Submitted the tx count for the last 10 seconds")
+        if initialstate.send_log({"last_10_secs": count}):
+            print("Submitted the tx count for the last 10 seconds")
 
         # Clear Queue
         msg_queue.clear()

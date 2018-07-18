@@ -15,3 +15,5 @@ def send_log(info_dict):
     streamer.close()
 
     print("Finished Submitting to Ze Cloud")
+
+    return True
