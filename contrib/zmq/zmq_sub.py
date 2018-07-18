@@ -38,22 +38,21 @@ def listener():
 
 
 def submit_is(msg_queue):
-    if msg_queue:
-        while True:
-            time.sleep(10)
-            if not msg_queue.empty():
-                msgs = msg_queue.get()
-                count = msg_queue.size()
-                initialstate.send_log({"last_10_secs": count})
-                print("Submitted the tx count for the last 10 seconds")
+    print(msg_queue)
 
-                # Clear Queue
-                with msg_queue.mutext:
-                    msg_queue.clear()
-            else:
-                pass
+    while True:
+        time.sleep(10)
+        if not msg_queue.empty():
+            msgs = msg_queue.get()
+            count = msg_queue.size()
+            initialstate.send_log({"last_10_secs": count})
+            print("Submitted the tx count for the last 10 seconds")
 
-    print("No Queue passed correctly")
+            # Clear Queue
+            with msg_queue.mutext:
+                msg_queue.clear()
+        else:
+            pass
 
 
 def zmq_tx_consumer(msg_queue):
@@ -64,6 +63,8 @@ def zmq_tx_consumer(msg_queue):
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernanceobject")
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernancevote")
     zmqSubSocket.connect("tcp://127.0.0.1:%i" % port)
+
+    print(msg_queue)
 
     try:
         while True:
@@ -103,7 +104,7 @@ def zmq_tx_consumer(msg_queue):
                 # initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
                 print(binascii.hexlify(body).decode("utf-8"))
 
-                msg_queue.put({"hash": tx_hash, "tx_count": sequence})
+                msg_queue.put({"hash": tx_hash})
 
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
