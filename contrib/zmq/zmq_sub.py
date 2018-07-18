@@ -45,14 +45,10 @@ def submit_is(msg_queue):
             print("Submitted the tx count for the last 10 seconds")
 
             # Clear Queue
-            with msg_queue.mutext:
-                msg_queue.clear()
-        else:
-            pass
+            msg_queue.clear()
 
         time.sleep(10)
         print("Got past the time.sleep")
-
 
 
 def zmq_tx_consumer(msg_queue):
