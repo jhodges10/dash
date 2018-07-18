@@ -41,7 +41,6 @@ def submit_is(msg_queue):
     while True:
         time.sleep(10)
         if not msg_queue.empty():
-            msgs = msg_queue.get()
             count = msg_queue.size()
             initialstate.send_log({"last_10_secs": count})
             print("Submitted the tx count for the last 10 seconds")
@@ -50,7 +49,7 @@ def submit_is(msg_queue):
             with msg_queue.mutext:
                 msg_queue.clear()
         else:
-            pass
+            continue
 
 
 def zmq_tx_consumer(msg_queue):
