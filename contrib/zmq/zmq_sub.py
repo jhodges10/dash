@@ -102,7 +102,7 @@ def zmq_tx_consumer(msg_queue):
                 # initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
                 print(binascii.hexlify(body).decode("utf-8"))
 
-                msg_queue.put({"hash": tx_hash})
+                msg_queue.put({"hashtx": tx_hash})
 
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
@@ -119,6 +119,7 @@ def zmq_tx_consumer(msg_queue):
 
     except KeyboardInterrupt:
         zmqContext.destroy()
+        msg_queue.join()
 
 
 if __name__ == '__main__':
