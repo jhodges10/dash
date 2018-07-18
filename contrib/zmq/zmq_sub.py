@@ -45,16 +45,15 @@ def submit_is(msg_queue):
 
     while True:
         print("Got Here")
-        if not msg_queue.empty():
-            count = msg_queue.size()
-            print(count)
-            time.sleep(1)
-            print("Sending log")
-            initialstate.send_log({"last_10_secs": count})
-            print("Submitted the tx count for the last 10 seconds")
+        count = msg_queue.size()
+        print(count)
+        time.sleep(1)
+        print("Sending log")
+        initialstate.send_log({"last_10_secs": count})
+        print("Submitted the tx count for the last 10 seconds")
 
-            # Clear Queue
-            msg_queue.clear()
+        # Clear Queue
+        msg_queue.clear()
 
         time.sleep(10)
         print("Got past the time.sleep")
