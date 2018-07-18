@@ -38,7 +38,9 @@ def submit_is(msg_queue):
     print(msg_queue)
 
     while True:
+        print("Got Here")
         time.sleep(10)
+        print("Got past the time.sleep")
         if not msg_queue.empty():
             count = msg_queue.size()
             initialstate.send_log({"last_10_secs": count})
