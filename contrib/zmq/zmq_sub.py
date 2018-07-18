@@ -5,14 +5,10 @@ import struct
 import csv
 import time
 import initialstate
-import sys
-from multiprocessing import Process, Lock
-
+from multiprocessing import Process
 from collections import deque
 
 port = 28332
-
-mutex = Lock()
 
 
 def write_csv(tstamp, type, value, sequence):
@@ -39,7 +35,7 @@ def listener():
 def submit_is(msg_queue):
 
     while True:
-        print("Printing queue output")
+        print(msg_queue)
 
         count = len(list(msg_queue))
         print("Queue Size: {}".format(count))
