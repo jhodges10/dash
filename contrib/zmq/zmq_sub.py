@@ -6,13 +6,9 @@ import csv
 import time
 import initialstate
 import sys
-is_py2 = sys.version[0] == '2'
-if is_py2:
-    import Queue as queue
-else:
-    import queue as queue
-
 from multiprocessing import Process, Lock
+
+from collections import deque
 
 port = 28332
 
@@ -29,7 +25,7 @@ def write_csv(tstamp, type, value, sequence):
 
 def listener():
     print("Creating Queue")
-    q = queue.Queue()
+    q = deque()
 
     print("Starting ZMQ Consumer...")
     worker_1 = Process(target=zmq_tx_consumer, args=(q,))
@@ -45,17 +41,15 @@ def submit_is(msg_queue):
     while True:
         print("Printing queue output")
 
-        count = msg_queue.qsize()
+        count = msg_queue.count()
         print("Queue Size: {}".format(count))
 
         initialstate.send_log({"last_10_secs": count})
         print("Submitted the tx count for the last 10 seconds")
 
         # Clear Queue
-        msg_queue.get(False)
+        msg_queue.clear(False)
         print("Cleared Queue")
-
-        msg_queue.task_done()
 
         time.sleep(10)
 
@@ -104,7 +98,7 @@ def zmq_tx_consumer(msg_queue):
                 # initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
                 print(binascii.hexlify(body).decode("utf-8"))
 
-                msg_queue.put({"hashtx": tx_hash})
+                msg_queue.append(tx_hash)
 
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
