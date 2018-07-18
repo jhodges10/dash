@@ -48,7 +48,7 @@ def submit_is(msg_queue):
             with msg_queue.mutext:
                 msg_queue.clear()
         else:
-            continue
+            pass
 
         time.sleep(10)
         print("Got past the time.sleep")
