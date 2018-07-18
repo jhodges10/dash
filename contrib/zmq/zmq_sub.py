@@ -28,11 +28,11 @@ def thread_manager():
     long_queue = Queue()
 
     print("Starting ZMQ Consumer...")
-    worker_1 = Process(target=zmq_tx_consumer, args=(short_queue, lock_ten))
-    worker_1.start()
+    worker_1 = Process(target=zmq_tx_consumer, args=(short_queue, long_queue, lock_ten, lock_sixty))
+        worker_1.start()
 
     print("Starting Queue Consumer/ InitialState Submitter")
-    worker_2 = Process(target=ten_seconds, args=(short_queue, long_queue, lock_ten, lock_sixty))
+    worker_2 = Process(target=ten_seconds, args=(short_queue, lock_ten))
     worker_2.start()
 
     print("Starting 60 Second SMA Consumer/ InititalState Submitter")
