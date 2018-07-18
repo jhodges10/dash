@@ -19,20 +19,42 @@ def write_csv(tstamp, type, value, sequence):
     return True
 
 
-def submit_is(msg_queue=None):
+def listener():
+    print("Creating Queue")
+    q = Queue(maxsize=0)
+    num_threads = 2
+
+    print("Starting ZMQ Worker...")
+    worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
+    worker_1.setDaemon(True)
+    worker_1.start()
+
+    print("Starting ")
+    worker_2 = Thread(target=submit_is, args=(q,))
+    worker_2.setDaemon(True)
+    worker_2.start()
+
+
+def submit_is(msg_queue):
     if msg_queue:
         while True:
             time.sleep(10)
-            msgs = msg_queue.get()
-            count = msg_queue.size()
-            initialstate.send_log({"last_10_secs": count})
-            print("Submitted the tx count for the last 10 seconds")
+            if not msg_queue.empty():
+                msgs = msg_queue.get()
+                count = msg_queue.size()
+                initialstate.send_log({"last_10_secs": count})
+                print("Submitted the tx count for the last 10 seconds")
 
-            # Clear Queue
-            with msg_queue.mutext:
-                msg_queue.clear()
+                # Clear Queue
+                with msg_queue.mutext:
+                    msg_queue.clear()
+            else:
+                pass
 
-def zmq_tx_consumer(msg_queue=None):
+    print("No Queue passed correctly")
+
+
+def zmq_tx_consumer(msg_queue):
     zmqContext = zmq.Context()
     zmqSubSocket = zmqContext.socket(zmq.SUB)
     zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashblock")
@@ -99,15 +121,4 @@ def zmq_tx_consumer(msg_queue=None):
 
 
 if __name__ == '__main__':
-    print("Creating Queue")
-    q = Queue(maxsize=0)
-    num_threads = 2
-    print("Starting ZMQ Worker...")
-    worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
-    worker_1.setDaemon(True)
-    worker_1.start()
-
-    print("Starting ")
-    worker_2 = Thread(target=submit_is, args=(q,))
-    worker_2.setDaemon(True)
-    worker_2.start()
+    listener()
