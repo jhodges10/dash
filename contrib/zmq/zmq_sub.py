@@ -38,6 +38,8 @@ def submit_is(msg_queue, lock):
     while True:
         lock.acquire()
         try:
+            count = msg_queue.qsize()
+
             if initialstate.send_log({"last_10_secs": count}):
                 print("Submitted the tx count for the last 10 seconds")
 
