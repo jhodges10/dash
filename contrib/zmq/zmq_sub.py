@@ -96,6 +96,8 @@ def zmq_tx_consumer(msg_queue):
 
                 msg_queue.append(tx_hash)
 
+                print(msg_queue)
+
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
                 print(binascii.hexlify(body).decode("utf-8"))
