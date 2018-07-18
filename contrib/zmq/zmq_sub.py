@@ -117,7 +117,8 @@ def zmq_tx_consumer(msg_queue):
                 print('- RAW TX LOCK ('+sequence+') -')
                 print(binascii.hexlify(body).decode("utf-8"))
 
-    except KeyboardInterrupt:
+    except Exception as e:
+        print(e)
         zmqContext.destroy()
         msg_queue.join()
 
