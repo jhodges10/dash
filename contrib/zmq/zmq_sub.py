@@ -5,8 +5,7 @@ import struct
 import csv
 import time
 import initialstate
-from multiprocessing import Process
-from collections import deque
+from multiprocessing import Process, Queue, Lock
 
 port = 28332
 
@@ -20,37 +19,39 @@ def write_csv(tstamp, type, value, sequence):
 
 
 def listener():
+    lock = Lock()
+
     print("Creating Queue")
-    q = deque()
+    q = Queue()
 
     print("Starting ZMQ Consumer...")
-    worker_1 = Process(target=zmq_tx_consumer, args=(q,))
+    worker_1 = Process(target=zmq_tx_consumer, args=(q, lock))
     worker_1.start()
 
     print("Starting Queue Consumer/ InitialState Submitter")
-    worker_2 = Process(target=submit_is, args=(q,))
+    worker_2 = Process(target=submit_is, args=(q, lock))
     worker_2.start()
 
 
-def submit_is(msg_queue):
+def submit_is(msg_queue, lock):
 
     while True:
-        print(msg_queue)
+        lock.acquire()
+        try:
+            if initialstate.send_log({"last_10_secs": count}):
+                print("Submitted the tx count for the last 10 seconds")
 
-        count = len(list(msg_queue))
-        print("Queue Size: {}".format(count))
+            # Clear Queue
+            msg_queue.clear()
+            print("Cleared Queue")
 
-        if initialstate.send_log({"last_10_secs": count}):
-            print("Submitted the tx count for the last 10 seconds")
-
-        # Clear Queue
-        msg_queue.clear()
-        print("Cleared Queue")
+        finally:
+            lock.relase()
 
         time.sleep(10)
 
 
-def zmq_tx_consumer(msg_queue):
+def zmq_tx_consumer(msg_queue, lock):
     zmqContext = zmq.Context()
     zmqSubSocket = zmqContext.socket(zmq.SUB)
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashblock")
@@ -94,9 +95,11 @@ def zmq_tx_consumer(msg_queue):
                 # initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
                 print(binascii.hexlify(body).decode("utf-8"))
 
-                msg_queue.append(tx_hash)
-
-                print(msg_queue)
+                lock.acquire()
+                try:
+                    msg_queue.put(tx_hash)
+                finally:
+                    lock.release()
 
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
