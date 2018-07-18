@@ -44,7 +44,6 @@ def submit_is(msg_queue):
 
     while True:
         print("Printing queue output")
-        print(msg_queue.get())
 
         count = msg_queue.qsize()
         print("Queue Size: {}".format(count))
