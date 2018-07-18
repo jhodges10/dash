@@ -46,7 +46,7 @@ def submit_is(msg_queue, lock):
             print("Cleared Queue")
 
         finally:
-            lock.relase()
+            lock.release()
 
         time.sleep(10)
 
