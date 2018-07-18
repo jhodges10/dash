@@ -29,12 +29,10 @@ def listener():
     worker_1.setDaemon(True)
     worker_1.start()
 
-    print("Starting ")
+    print("Starting InitialState Submitter")
     worker_2 = Thread(target=submit_is, args=(q,))
     worker_2.setDaemon(True)
     worker_2.start()
-
-    q.join()
 
 
 def submit_is(msg_queue):
