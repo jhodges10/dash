@@ -34,6 +34,8 @@ def listener():
     worker_2.setDaemon(True)
     worker_2.start()
 
+    q.join()
+
 
 def submit_is(msg_queue):
     if msg_queue:
