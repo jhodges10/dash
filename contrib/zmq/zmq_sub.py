@@ -47,7 +47,7 @@ def sixty_seconds(sma_queue, lock):
         try:
             count = sma_queue.qsize()
 
-            if initialstate.send_log({"10_seconds_sma": (count/6}):
+            if initialstate.send_log({"10_seconds_sma": (count/6)}):
                 print("Submitted the tx count for the last 10 seconds")
 
             # Clear Queue
