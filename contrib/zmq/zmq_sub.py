@@ -5,6 +5,8 @@ import struct
 import csv
 import time
 import initialstate
+from Queue import Queue
+from threading import Thread
 
 port = 28332
 
@@ -17,7 +19,20 @@ def write_csv(tstamp, type, value, sequence):
     return True
 
 
-def zmq_tx_consumer():
+def submit_is(msg_queue=None):
+    if msg_queue:
+        while True:
+            time.sleep(10)
+            msgs = msg_queue.get()
+            count = msg_queue.size()
+            initialstate.send_log({"last_10_secs": count})
+            print("Submitted the tx count for the last 10 seconds")
+
+            # Clear Queue
+            with msg_queue.mutext:
+                msg_queue.clear()
+
+def zmq_tx_consumer(msg_queue=None):
     zmqContext = zmq.Context()
     zmqSubSocket = zmqContext.socket(zmq.SUB)
     zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashblock")
@@ -31,7 +46,7 @@ def zmq_tx_consumer():
             msg = zmqSubSocket.recv_multipart()
             topic = str(msg[0].decode("utf-8"))
             body = msg[1]
-            sequence = "Unknown";
+            sequence = "Unknown"
 
             if len(msg[-1]) == 4:
                 msgSequence = struct.unpack('<I', msg[-1])[-1]
@@ -61,9 +76,10 @@ def zmq_tx_consumer():
             elif topic == "hashtx":
                 print('- HASH TX ('+sequence+') -')
                 tx_hash = binascii.hexlify(body).decode("utf-8")
-                initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
+                # initialstate.send_log({"hash": tx_hash, "tx_count": sequence})
                 print(binascii.hexlify(body).decode("utf-8"))
-                # initialstate.send_log({"hashtx": tx_hash})
+
+                msg_queue.put({"hash": tx_hash, "tx_count": sequence})
 
             elif topic == "hashtxlock":
                 print('- HASH TX LOCK ('+sequence+') -')
@@ -77,12 +93,21 @@ def zmq_tx_consumer():
             elif topic == "rawtxlock":
                 print('- RAW TX LOCK ('+sequence+') -')
                 print(binascii.hexlify(body).decode("utf-8"))
-            
 
     except KeyboardInterrupt:
         zmqContext.destroy()
 
 
 if __name__ == '__main__':
-    print("Starting ZMQ Listener...")
-    zmq_tx_consumer()
+    print("Creating Queue")
+    q = Queue(maxsize=0)
+    num_threads = 2
+    print("Starting ZMQ Worker...")
+    worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
+    worker_1.setDaemon(True)
+    worker_1.start()
+
+    print("Starting ")
+    worker_2 = Thread(target=submit_is, args=(q,))
+    worker_2.setDaemon(True)
+    worker_2.start()
