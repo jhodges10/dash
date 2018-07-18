@@ -39,8 +39,6 @@ def submit_is(msg_queue):
 
     while True:
         print("Got Here")
-        time.sleep(10)
-        print("Got past the time.sleep")
         if not msg_queue.empty():
             count = msg_queue.size()
             initialstate.send_log({"last_10_secs": count})
@@ -51,6 +49,10 @@ def submit_is(msg_queue):
                 msg_queue.clear()
         else:
             continue
+
+        time.sleep(10)
+        print("Got past the time.sleep")
+
 
 
 def zmq_tx_consumer(msg_queue):
@@ -74,21 +76,18 @@ def zmq_tx_consumer(msg_queue):
             if len(msg[-1]) == 4:
                 msgSequence = struct.unpack('<I', msg[-1])[-1]
                 sequence = str(msgSequence)
-
             if topic == "hashblock":
                 print('- HASH BLOCK ('+sequence+') -')
                 hashblock = binascii.hexlify(body).decode("utf-8")
                 write_csv(time.time(), 'hashblock', hashblock, sequence)
                 print(hashblock)
                 # initialstate.send_log({"block_count": "{}".format(sequence)})
-
             elif topic == "rawgovernanceobject":
                 print('- RAW GOVERNANCE OBJECT ('+sequence+') -')
                 governance_object = binascii.hexlify(body).decode("utf-8")
                 write_csv(time.time(), 'rawgovernanceobject', governance_object, sequence)
                 print(governance_object)
                 # initialstate.send_log({"hash": governance_object, "tx_count": sequence})
-
             elif topic == "rawgovernancevote":
                 print('- RAW GOVERNANCE VOTE ('+sequence+') -')
                 governance_vote = binascii.hexlify(body).decode("utf-8")
