@@ -52,8 +52,10 @@ def submit_is(msg_queue):
         print("Submitted the tx count for the last 10 seconds")
 
         # Clear Queue
-        msg_queue.get()
+        msg_queue.get(False)
         print("Cleared Queue")
+
+        msg_queue.task_done()
 
         time.sleep(10)
 
