@@ -12,9 +12,11 @@ if is_py2:
 else:
     import queue as queue
 
-from threading import Thread
+from multiprocessing import Process, Lock
 
 port = 28332
+
+mutex = Lock()
 
 
 def write_csv(tstamp, type, value, sequence):
@@ -30,13 +32,11 @@ def listener():
     q = queue.Queue()
 
     print("Starting ZMQ Worker...")
-    worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
-    worker_1.setDaemon(True)
+    worker_1 = Process(target=zmq_tx_consumer, args=(q,))
     worker_1.start()
 
     print("Starting InitialState Submitter")
-    worker_2 = Thread(target=submit_is, args=(q,))
-    worker_2.setDaemon(True)
+    worker_2 = Process(target=submit_is, args=(q,))
     worker_2.start()
 
 
@@ -46,13 +46,15 @@ def submit_is(msg_queue):
     while True:
         print("Got Here")
         count = msg_queue.qsize()
-        print(count)
+        print("Queue Size: {}".format(count))
+
         time.sleep(1)
         print("Sending log")
         initialstate.send_log({"last_10_secs": count})
         print("Submitted the tx count for the last 10 seconds")
 
         # Clear Queue
+
         msg_queue.clear()
 
         time.sleep(10)
