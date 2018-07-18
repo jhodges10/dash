@@ -61,10 +61,10 @@ def sixty_seconds(sma_queue, lock):
         time.sleep(60)
 
 
-def ten_seconds(short_queue, lock_ten):
+def ten_seconds(short_queue, lock):
 
     while True:
-        lock_ten.acquire()
+        lock.acquire()
         try:
             count = short_queue.qsize()
 
