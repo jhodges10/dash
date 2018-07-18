@@ -44,8 +44,7 @@ def submit_is(msg_queue):
     print(msg_queue)
 
     while True:
-        time.sleep(10)
-
+        print("Printing queue output")
         print(msg_queue.get())
 
         count = msg_queue.qsize()
@@ -57,6 +56,8 @@ def submit_is(msg_queue):
         # Clear Queue
         msg_queue.get()
         print("Cleared Queue")
+
+        time.sleep(10)
 
 
 def zmq_tx_consumer(msg_queue):
