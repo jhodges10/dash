@@ -40,10 +40,10 @@ def thread_manager():
     worker_3.start()
 
 
-def sixty_seconds(sma_queue, lock):
+def sixty_seconds(sma_queue, lock_sixty):
 
     while True:
-        lock.acquire()
+        lock_sixty.acquire()
         try:
             count = sma_queue.qsize()
 
@@ -56,15 +56,15 @@ def sixty_seconds(sma_queue, lock):
             print("Cleared Queue")
 
         finally:
-            lock.release()
+            lock_sixty.release()
 
         time.sleep(60)
 
 
-def ten_seconds(short_queue, lock):
+def ten_seconds(short_queue, lock_ten):
 
     while True:
-        lock.acquire()
+        lock_ten.acquire()
         try:
             count = short_queue.qsize()
 
@@ -77,7 +77,7 @@ def ten_seconds(short_queue, lock):
             print("Cleared Queue")
 
         finally:
-            lock.release()
+            lock_ten.release()
 
         time.sleep(10)
 
@@ -115,7 +115,6 @@ def zmq_tx_consumer(short_queue, long_queue, lock_ten, lock_sixty):
                     short_queue.put(tx_hash)
                 finally:
                     lock_ten.release()
-
 
                 lock_sixty.acquire()
 
