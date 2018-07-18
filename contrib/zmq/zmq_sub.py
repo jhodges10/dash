@@ -31,17 +31,16 @@ def listener():
     print("Creating Queue")
     q = queue.Queue()
 
-    print("Starting ZMQ Worker...")
+    print("Starting ZMQ Consumer...")
     worker_1 = Process(target=zmq_tx_consumer, args=(q,))
     worker_1.start()
 
-    print("Starting InitialState Submitter")
+    print("Starting Queue Consumer/ InitialState Submitter")
     worker_2 = Process(target=submit_is, args=(q,))
     worker_2.start()
 
 
 def submit_is(msg_queue):
-    print(msg_queue)
 
     while True:
         print("Printing queue output")
@@ -68,8 +67,6 @@ def zmq_tx_consumer(msg_queue):
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernanceobject")
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernancevote")
     zmqSubSocket.connect("tcp://127.0.0.1:%i" % port)
-
-    print(msg_queue)
 
     try:
         while True:
