@@ -44,21 +44,17 @@ def submit_is(msg_queue):
     print(msg_queue)
 
     while True:
-        print("Got Here")
+        time.sleep(10)
+
         count = msg_queue.qsize()
         print("Queue Size: {}".format(count))
 
-        time.sleep(1)
-        print("Sending log")
         initialstate.send_log({"last_10_secs": count})
         print("Submitted the tx count for the last 10 seconds")
 
         # Clear Queue
-
-        del msg_queue[:]
-
-        time.sleep(10)
-        print("Got past the time.sleep")
+        msg_queue.get()
+        print("Cleared Queue")
 
 
 def zmq_tx_consumer(msg_queue):
