@@ -21,8 +21,7 @@ def write_csv(tstamp, type, value, sequence):
 
 def listener():
     print("Creating Queue")
-    q = Queue(maxsize=0)
-    num_threads = 2
+    q = Queue()
 
     print("Starting ZMQ Worker...")
     worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
