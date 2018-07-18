@@ -5,7 +5,13 @@ import struct
 import csv
 import time
 import initialstate
-from Queue import Queue
+import sys
+is_py2 = sys.version[0] == '2'
+if is_py2:
+    import Queue as queue
+else:
+    import queue as queue
+
 from threading import Thread
 
 port = 28332
@@ -21,7 +27,7 @@ def write_csv(tstamp, type, value, sequence):
 
 def listener():
     print("Creating Queue")
-    q = Queue()
+    q = queue.Queue()
 
     print("Starting ZMQ Worker...")
     worker_1 = Thread(target=zmq_tx_consumer, args=(q,))
@@ -41,6 +47,9 @@ def submit_is(msg_queue):
         print("Got Here")
         if not msg_queue.empty():
             count = msg_queue.size()
+            print(count)
+            time.sleep(1)
+            print("Sending log")
             initialstate.send_log({"last_10_secs": count})
             print("Submitted the tx count for the last 10 seconds")
 
