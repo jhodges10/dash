@@ -488,6 +488,9 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-zmqpubrawblock=<address>", _("Enable publish raw block in <address>"));
     strUsage += HelpMessageOpt("-zmqpubrawtx=<address>", _("Enable publish raw transaction in <address>"));
     strUsage += HelpMessageOpt("-zmqpubrawtxlock=<address>", _("Enable publish raw transaction (locked via InstantSend) in <address>"));
+    strUsage += HelpMessageOpt("-zmqpubrawmasternode=<address>", _("Enable publish raw masternode in <address>"));
+    strUsage += HelpMessageOpt("-zmqpubrawgovernanceobject=<address>", _("Enable publish raw governance object in <address>"));
+    strUsage += HelpMessageOpt("-zmqpubrawgovernancevote=<address>", _("Enable publish raw governance vote in <address>"));
 #endif
 
     strUsage += HelpMessageGroup(_("Debugging/Testing options:"));

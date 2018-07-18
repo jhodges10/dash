@@ -55,7 +55,7 @@ def submit_is(msg_queue):
 
         # Clear Queue
 
-        msg_queue.clear()
+        del msg_queue[:]
 
         time.sleep(10)
         print("Got past the time.sleep")

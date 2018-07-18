@@ -242,7 +242,7 @@ bool CZMQPublishHashGovernanceObjectNotifier::NotifyGovernanceObject(const CGove
     return SendMessage(MSG_HASHGOBJ, data, 32);
 }
 
-bool CZMQPublishRawGovernanceObjectNotifier::NotifyGovernanceObject(const CGovernanceObject& govobj)
+bool CZMQPublishRawGovernanceObjectNotifier::NotifyGovernanceObject(const CGovernanceObject &govobj)
 {
     uint256 nHash = govobj.GetHash();
     LogPrint("gobject", "gobject: Publish rawgovernanceobject: hash = %s, type = %d\n", nHash.ToString(), govobj.GetObjectType());
@@ -251,7 +251,7 @@ bool CZMQPublishRawGovernanceObjectNotifier::NotifyGovernanceObject(const CGover
     return SendMessage(MSG_RAWGOVERNANCEOBJECT, &(*ss.begin()), ss.size());
 }
 
-bool CZMQPublishRawGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanceVote& vote)
+bool CZMQPublishRawGovernanceVoteNotifier::NotifyGovernanceVote(const CGovernanceVote &vote)
 {
     uint256 nHash = vote.GetHash();
     LogPrint("gobject", "gobject: Publish rawgovernancevote: hash = %s, vote = %s\n", nHash.ToString(), vote.ToString());
