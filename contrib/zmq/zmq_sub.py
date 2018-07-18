@@ -46,6 +46,8 @@ def submit_is(msg_queue):
     while True:
         time.sleep(10)
 
+        print(msg_queue.get())
+
         count = msg_queue.qsize()
         print("Queue Size: {}".format(count))
 
@@ -60,7 +62,7 @@ def submit_is(msg_queue):
 def zmq_tx_consumer(msg_queue):
     zmqContext = zmq.Context()
     zmqSubSocket = zmqContext.socket(zmq.SUB)
-    zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashblock")
+    # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashblock")
     zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"hashtx")
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernanceobject")
     # zmqSubSocket.setsockopt(zmq.SUBSCRIBE, b"rawgovernancevote")
