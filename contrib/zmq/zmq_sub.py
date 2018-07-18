@@ -45,7 +45,7 @@ def submit_is(msg_queue):
 
     while True:
         print("Got Here")
-        count = msg_queue.size()
+        count = msg_queue.qsize()
         print(count)
         time.sleep(1)
         print("Sending log")
